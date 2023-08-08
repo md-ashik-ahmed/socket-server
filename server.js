@@ -58,6 +58,13 @@ async function run() {
             const result = await usersCollection.find().toArray();
             res.send(result);
         })
+        
+        // this api job find single email data and provide to user
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const result = await usersCollection.find({ email: email }).toArray();
+            res.send(result);
+        })
 
         //alluser data post this api 
         app.post('/users', async (req, res) => {
