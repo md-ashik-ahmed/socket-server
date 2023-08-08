@@ -58,13 +58,38 @@ async function run() {
             const result = await usersCollection.find().toArray();
             res.send(result);
         })
-        
+
         // this api job find single email data and provide to user
         app.get('/users/:email', async (req, res) => {
             const email = req.params.email;
             const result = await usersCollection.find({ email: email }).toArray();
             res.send(result);
         })
+
+        // update information user specific id 
+
+        app.put('/allusers/:id', async (req, res) => {
+            const id = req.params.id;
+            const name = req.body.name;
+            const image = req.body.image;
+            const university = req.body.university;
+            const address = req.body.address;
+            const birthdate = req.body.birthdate;
+
+            const filter = { _id: new ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    name: name,
+                    image: image,
+                    university: university,
+                    address: address,
+                    birthdate: birthdate,
+                },
+            };
+            const options = { upsert: true };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
 
         //alluser data post this api 
         app.post('/users', async (req, res) => {
